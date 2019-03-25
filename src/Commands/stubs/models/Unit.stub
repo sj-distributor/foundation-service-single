@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}};
+
+use Wiltechsteam\FoundationServiceSingle\Models\Unit as UnitModel;
+
+class Unit extends UnitModel
+{
+
+}
