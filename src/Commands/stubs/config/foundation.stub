@@ -10,6 +10,9 @@ return [
     'rabbitmq_password' => env('RABBITMQ_PASSWORD', 'guest'),
     "models_namespace" => "Wiltechsteam\FoundationServiceSingle",
 
+    // 模型命名空间配置
+    'models_namespace' =>'App\Models',
+
     // staff表字断映射设置 'field' => '表对应字段名'
     'staff' => [
         "id" => "id",
