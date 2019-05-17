@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "SjDistributor\\FoundationService\\FoundationServiceProvider"
+                "Wiltechsteam\\FoundationService\\FoundationServiceProvider"
             ]
         }
     }
