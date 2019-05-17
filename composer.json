@@ -19,5 +19,12 @@
         "psr-4": {
             "Wiltechsteam\\FoundationServiceSingle\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SjDistributor\\FoundationService\\FoundationServiceProvider"
+            ]
+        }
     }
 }
