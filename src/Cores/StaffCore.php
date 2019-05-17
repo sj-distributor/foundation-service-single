@@ -32,7 +32,7 @@ class StaffCore
                 $item = self::toCnInitializeModel($staff);
                 $item = self::addDepartmentNameAndGroupName($item,$unitList);
                 $item = self::addPositionName($item,$positionList);
-               // $item = self::addSuperiorId($item,$unitList);
+                $item = self::addSuperiorId($item,$unitList);
             }else
             {
                 $item =self::toUsInitializeModel($staff);
@@ -48,14 +48,14 @@ class StaffCore
         foreach ($unitList as $unit)
         {
 
-            if($unit["id"] == $staff["department_id"])
+            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.department_id')])
             {
-                $staff["department_name"] = $unit["unit_name"];
+                $staff[config('foundation.staff.department_id')] = $unit[config('foundation.unit.name')];
             }
 
-            if($unit["id"] == $staff["group_id"])
+            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.group_id')])
             {
-                $staff["group_name"] = $unit["unit_name"];
+                $staff[config('foundation.staff.group_name')] = $unit[config('foundation.unit.name')];
             }
         }
         return $staff;
@@ -64,24 +64,24 @@ class StaffCore
 
     public static function addSuperiorId($staff,$unitList)
     {
-        $unitId = $staff["group_id"];
+        $unitId = $staff[config('foundation.staff.group_id')];
 
-        if(empty($staff["group_id"]))
+        if(empty($staff[config('foundation.staff.group_id')]))
         {
-            $unitId = $staff["department_id"];
+            $unitId = $staff[config('foundation.staff.department_id')];
         }
 
-        if(empty($staff["department_id"]))
+        if(empty($staff[config('foundation.staff.department_id')]))
         {
-            $unitId = $staff["company_id"];
+            $unitId = $staff[config('foundation.staff.company_id')];
         }
 
         foreach ($unitList as $unit)
         {
 
-            if($unit["id"] == $unitId)
+            if($unit[config('foundation.unit.id')] == $unitId)
             {
-                $staff["superior_id"] = $unit["leader_id"];
+                $staff[config('foundation.staff.superior_id')] = $unit[config('foundation.unit.leader_id')];
             }
         }
         return $staff;
@@ -92,9 +92,9 @@ class StaffCore
     {
         foreach ($positionList as $position)
         {
-            if($position["id"] == $staff["position_id"])
+            if($position[config('foundation.position.id')] == $staff[config('foundation.staff.position_id')])
             {
-                $staff["position_name"] = $position["name"];
+                $staff[config('foundation.staff.position_name')] = $position[config('foundation.position.name')];
             }
         }
         return $staff;
@@ -102,201 +102,219 @@ class StaffCore
 
     public static function toUsModel($foundationData)
     {
-        return [
-            "id"						        =>	    strtoupper(@$foundationData["StaffID"]),
-            "user_id"		                    =>	    strtoupper(@$foundationData["UserID"]),
-            "username"		                    =>	    @$foundationData["UserName"],
-            "name_en_long"				        =>	    @$foundationData["PayrollName"],
-            "gender"                            =>      @$foundationData['Gender'],
-            "department_id"				        =>	    strtoupper(@$foundationData["DepartmentID"]),
-            //"department_name"		            =>	    @$foundationData["DepartmentName"],
-            "group_id"					        =>	    strtoupper(@$foundationData["GroupID"]),
-           // "group_name"		                =>	    @$foundationData["GroupName"],
-            "position_id"		                =>	    strtoupper(@$foundationData["PositionID"]),
-           // "position_name"		                =>	    @$foundationData["PositionName"],
-            "identity_card_number"              =>      @$foundationData['SSN'],
-            "dob"                               =>      date("Y-m-d",strtotime(@$foundationData['DOB'])),
-            "address1"                          =>      @$foundationData['Address'],
-            "phone_number"                      =>      @$foundationData['PersonalMobile'],
-            "emergency_contact"                 =>      @$foundationData['EmergencyContact'],
-            "emergency_contact_phone_number"    =>      @$foundationData['EmergencyTel'],
-            "position_status"                   =>      isset($foundationData["PositionStatus"])?$foundationData["PositionStatus"]:0,
-            "hired_date"				        =>	    date("Y-m-d H:i:s",strtotime(@$foundationData["HiredDate"])),
-            "terminated_date"                   =>      date("Y-m-d",strtotime(@$foundationData['TerminatedDate'])),
-            "country_code"		                =>	    2,
+        $dataOut = [
+            config('foundation.staff.id')						        =>	    strtoupper(@$foundationData["StaffID"]),
+            config('foundation.staff.user_id')		                    =>	    strtoupper(@$foundationData["UserID"]),
+            config('foundation.staff.username')		                    =>	    @$foundationData["UserName"],
+            config('foundation.staff.name_en_long')				        =>	    @$foundationData["PayrollName"],
+            config('foundation.staff.gender')                            =>      @$foundationData['Gender'],
+            config('foundation.staff.department_id')				        =>	    strtoupper(@$foundationData["DepartmentID"]),
+            // config('foundation.staff.department_name')		            =>	    @$foundationData["DepartmentName"],
+            config('foundation.staff.group_id')					        =>	    strtoupper(@$foundationData["GroupID"]),
+            // config('foundation.staff.group_name')		                =>	    @$foundationData["GroupName"],
+            config('foundation.staff.position_id')		                =>	    strtoupper(@$foundationData["PositionID"]),
+            // config('foundation.staff.position_name')		                =>	    @$foundationData["PositionName"],
+            config('foundation.staff.identity_card_number')              =>      @$foundationData['SSN'],
+            config('foundation.staff.dob')                               =>      date("Y-m-d",strtotime(@$foundationData['DOB'])),
+            config('foundation.staff.address1')                          =>      @$foundationData['Address'],
+            config('foundation.staff.phone_number')                      =>      @$foundationData['PersonalMobile'],
+            config('foundation.staff.emergency_contact')                 =>      @$foundationData['EmergencyContact'],
+            config('foundation.staff.emergency_contact_phone_number')    =>      @$foundationData['EmergencyTel'],
+            config('foundation.staff.position_status')                   =>      isset($foundationData["PositionStatus"])?$foundationData["PositionStatus"]:0,
+            config('foundation.staff.hired_date')				        =>	    date("Y-m-d H:i:s",strtotime(@$foundationData["HiredDate"])),
+            config('foundation.staff.terminated_date')                  =>      date("Y-m-d",strtotime(@$foundationData['TerminatedDate'])),
+            config('foundation.staff.country_code')		                =>	    2,
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toCnModel($foundationData)
     {
         $dataOut = [
-            "id"						        =>  	strtoupper(@$foundationData["staffID"]),
-            "serial_number"				        =>  	@$foundationData["serialNumber"],
-            "name_cn_long"				        =>  	@$foundationData["nameCNLong"],
-            "name_en_long"				        =>  	@$foundationData["nameENLong"],
-            "gender"                            =>      isset($foundationData["gender"])?$foundationData['gender']:0,
-            "department_id"				        =>  	strtoupper(@$foundationData["departmentID"]),
-           // "department_name"			        =>  	@$foundationData["departmentName"],
-            "group_id"					        =>  	strtoupper(@$foundationData["groupID"]),
-           // "group_name"				        =>  	@$foundationData["groupName"],
-            "position_id"				        =>  	strtoupper(@$foundationData["positionID"]),
-            //"position_name"				        =>  	@$foundationData["positionName"],
-            "superior_id"				        =>  	strtoupper(@$foundationData["superiorID"]),
-            "company_id"	                    =>	    strtoupper(@$foundationData["companyID"]),
-           // "company_name"	                    =>	    @$foundationData["companyName"],
-            "identity_card_number"	        	=>  	@$foundationData["identityCardNumber"],
-            "dob"						        =>  	empty($foundationData["dob"]) ?null:date("Y-m-d",strtotime(@$foundationData["dob"])),
-            "nation"					        =>  	@$foundationData["nation"],
-            "political_status"                  =>      isset($foundationData["politicalStatus"])?$foundationData["politicalStatus"]:null,
-            "marital_status"                    =>      isset($foundationData["maritalStatus"])?$foundationData['maritalStatus']:0,
-            "fertility_status"                  =>      isset($foundationData["fertilityStatus"])?$foundationData['fertilityStatus']:0,
-            "household_category"		        =>  	@$foundationData["householdCategory"],
-            "household_location"		        =>  	@$foundationData["householdLocation"],
-            "graduation_school"			        =>  	@$foundationData["graduationSchool"],
-            "major"						        =>  	@$foundationData["major"],
-            "education"                         =>      isset($foundationData["education"])?$foundationData['education']:null,
-            "bank_name"					        =>  	@$foundationData["bankName"],
-            "bank_number"			        	=>  	@$foundationData["bankNumber"],
-            "phone_number"			        	=>  	@$foundationData["phoneNumber"],
-            "email"						        =>  	@$foundationData["email"],
-            "hired_date"				        =>  	empty($foundationData["hiredDate"])?null:date("Y-m-d H:i:s",strtotime(@$foundationData["hiredDate"])),
-            "contract_status"                   =>      isset($foundationData["contractStatus"])?$foundationData['contractStatus']:0,
-            "finger_print_number"		        =>  	@$foundationData["fingerPrintNumber"],
-            "work_place"				        =>	    @$foundationData["workPlace"],
-            "position_status"                   =>      isset($foundationData["positionStatus"])?$foundationData["positionStatus"]:0,
-            "address1"					        =>	    @$foundationData["address1"],
-            "address2"					        =>	    @$foundationData["address2"],
-            "emergency_contact"			        =>	    @$foundationData["emergencyContact"],
-            "emergency_contact_phone_number"	=>	    @$foundationData["emergencyContactPhoneNumber"],
-            "entrance_guard_number"	            =>	    @$foundationData["entranceGuardNumber"],
-            "seat_number"	                    =>	    @$foundationData["seatNumber"],
-            "current_address"	                =>	    @$foundationData["currentAddress"],
-            "country_code"                      =>      1
+            config('foundation.staff.id')						        =>  	strtoupper(@$foundationData["staffID"]),
+            config('foundation.staff.serial_number')				        =>  	@$foundationData["serialNumber"],
+            config('foundation.staff.name_cn_long')				        =>  	@$foundationData["nameCNLong"],
+            config('foundation.staff.name_en_long')				        =>  	@$foundationData["nameENLong"],
+            config('foundation.staff.gender')                            =>      isset($foundationData["gender"])?$foundationData['gender']:0,
+            config('foundation.staff.department_id')				        =>  	strtoupper(@$foundationData["departmentID"]),
+            // config('foundation.staff.department_name')			        =>  	@$foundationData["departmentName"],
+            config('foundation.staff.group_id')					        =>  	strtoupper(@$foundationData["groupID"]),
+            // config('foundation.staff.group_name')				        =>  	@$foundationData["groupName"],
+            config('foundation.staff.position_id')				        =>  	strtoupper(@$foundationData["positionID"]),
+            // config('foundation.staff.position_name')				        =>  	@$foundationData["positionName"],
+            config('foundation.staff.superior_id')				        =>  	strtoupper(@$foundationData["superiorID"]),
+            config('foundation.staff.company_id')	                    =>	    strtoupper(@$foundationData["companyID"]),
+            // config('foundation.staff.company_name')	                    =>	    @$foundationData["companyName"],
+            config('foundation.staff.identity_card_number')	        	=>  	@$foundationData["identityCardNumber"],
+            config('foundation.staff.dob')						        =>  	empty($foundationData["dob"]) ?null:date("Y-m-d",strtotime(@$foundationData["dob"])),
+            config('foundation.staff.nation')					        =>  	@$foundationData["nation"],
+            config('foundation.staff.political_status')                  =>      isset($foundationData["politicalStatus"])?$foundationData["politicalStatus"]:null,
+            config('foundation.staff.marital_status')                    =>      isset($foundationData["maritalStatus"])?$foundationData['maritalStatus']:0,
+            config('foundation.staff.fertility_status')                  =>      isset($foundationData["fertilityStatus"])?$foundationData['fertilityStatus']:0,
+            config('foundation.staff.household_category')		        =>  	@$foundationData["householdCategory"],
+            config('foundation.staff.household_location')		        =>  	@$foundationData["householdLocation"],
+            config('foundation.staff.graduation_school')			        =>  	@$foundationData["graduationSchool"],
+            config('foundation.staff.major')						        =>  	@$foundationData["major"],
+            config('foundation.staff.education')                         =>      isset($foundationData["education"])?$foundationData['education']:null,
+            config('foundation.staff.bank_name')					        =>  	@$foundationData["bankName"],
+            config('foundation.staff.bank_number')			        	=>  	@$foundationData["bankNumber"],
+            config('foundation.staff.phone_number')			        	=>  	@$foundationData["phoneNumber"],
+            config('foundation.staff.email')						        =>  	@$foundationData["email"],
+            config('foundation.staff.hired_date')				        =>  	empty($foundationData["hiredDate"])?null:date("Y-m-d H:i:s",strtotime(@$foundationData["hiredDate"])),
+            config('foundation.staff.contract_status')                   =>      isset($foundationData["contractStatus"])?$foundationData['contractStatus']:0,
+            config('foundation.staff.finger_print_number')		        =>  	@$foundationData["fingerPrintNumber"],
+            config('foundation.staff.work_place')				        =>	    @$foundationData["workPlace"],
+            config('foundation.staff.position_status')                   =>      isset($foundationData["positionStatus"])?$foundationData["positionStatus"]:0,
+            config('foundation.staff.address1')					        =>	    @$foundationData["address1"],
+            config('foundation.staff.address2')					        =>	    @$foundationData["address2"],
+            config('foundation.staff.emergency_contact')			        =>	    @$foundationData["emergencyContact"],
+            config('foundation.staff.emergency_contact_phone_number')	=>	    @$foundationData["emergencyContactPhoneNumber"],
+            config('foundation.staff.entrance_guard_number')	            =>	    @$foundationData["entranceGuardNumber"],
+            config('foundation.staff.seat_number')	                    =>	    @$foundationData["seatNumber"],
+            config('foundation.staff.current_address')	                =>	    @$foundationData["currentAddress"],
+            config('foundation.staff.country_code')                      =>      1
         ];
 
 
         if (isset($foundationData["terminatedDate"])){
-            $dataOut["terminated_date"]         =       date("Y-m-d H:i:s",strtotime(@$foundationData["terminatedDate"]));
+            $dataOut[config('foundation.staff.terminated_date')]         =       date("Y-m-d H:i:s",strtotime(@$foundationData["terminatedDate"]));
         }
         if (isset($foundationData["internshipStartDate"])){
-            $dataOut["internship_start_date"]   =       date("Y-m-d H:i:s",strtotime(@$foundationData["internshipStartDate"]));
+            $dataOut[config('foundation.staff.internship_start_date')]   =       date("Y-m-d H:i:s",strtotime(@$foundationData["internshipStartDate"]));
         }
         if (isset($foundationData["internshipEndDate"])){
-            $dataOut["internship_end_date"]     =       date("Y-m-d H:i:s",strtotime(@$foundationData["internshipEndDate"]));
+            $dataOut[config('foundation.staff.internship_end_date')]     =       date("Y-m-d H:i:s",strtotime(@$foundationData["internshipEndDate"]));
         }
+
+        unset($dataOut['']);
 
         return $dataOut;
     }
 
     public static function toCnInitializeModel($foundationData)
     {
-        return [
-            "id"                                =>      strtoupper(@$foundationData["id"]),
-            "user_id"                           =>      isset($foundationData["userID"])?strtoupper($foundationData['userID']):null,
-            "user_name"                          =>      isset($foundationData["userName"])?$foundationData['userName']:null,
-            "serial_number"                     =>      @$foundationData["serialNumber"],
-            "name_cn_long"                      =>      @$foundationData["nameCNLong"],
-            "name_en_long"                      =>      @$foundationData["nameENLong"],
-            "gender"                            =>      isset($foundationData["gender"])?$foundationData['gender']:0,
-            "company_id"                        =>      strtoupper(@$foundationData["companyID"]),
-            //"company_name"                      =>      @$foundationData["companyName"],
-            "department_id"                     =>      strtoupper(@$foundationData["departmentID"]),
-            //"department_name"                   =>      @$foundationData["departmentName"],
-            "group_id"                          =>      strtoupper(@$foundationData["groupID"]),
-           // "group_name"                        =>      @$foundationData["groupName"],
-            "position_id"                       =>      strtoupper(@$foundationData["positionID"]),
-           // "position_name"                     =>      @$foundationData["positionName"],
-            "superior_id"                       =>      strtoupper(@$foundationData["superiorID"]),
-            "identity_card_number"              =>      @$foundationData["identityCardNumber"],
-            "dob"                               =>      empty($foundationData["dob"])?null:date("Y-m-d",strtotime(@$foundationData["dob"])),
-            "nation"                            =>      @$foundationData["nation"],
-            "political_status"                  =>      isset($foundationData["politicalStatus"])?$foundationData["politicalStatus"]:null,
-            "marital_status"                    =>      isset($foundationData["maritalStatus"])?$foundationData['maritalStatus']:0,
-            "fertility_status"                  =>      isset($foundationData["fertilityStatus"])?$foundationData['fertilityStatus']:0,
-            "household_category"                =>      @$foundationData["householdCategory"],
-            "household_location"                =>      @$foundationData["householdLocation"],
-            "graduation_school"                 =>      @$foundationData["graduationSchool"],
-            "major"                             =>      @$foundationData["major"],
-            "education"                         =>      isset($foundationData["education"])?$foundationData['education']:null,
-            "bank_name"                         =>      @$foundationData["bankName"],
-            "bank_number"                       =>      @$foundationData["bankNumber"],
-            "phone_number"                      =>      @$foundationData["phoneNumber"],
-            "email"                             =>      @$foundationData["email"],
-            "hired_date"                        =>      date("Y-m-d H:i:s",strtotime(@$foundationData["hiredDate"])),
-            "contract_status"                   =>      isset($foundationData["contractStatus"])?$foundationData['contractStatus']:0,
-            "finger_print_number"               =>      @$foundationData["fingerPrintNumber"],
-            "work_place"                        =>      @$foundationData["workPlace"],
-            "position_status"                   =>      isset($foundationData["positionStatus"])?$foundationData["positionStatus"]:0,
-            "terminated_date"                   =>      isset($foundationData["terminatedDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["terminatedDate"])):null,
-            "internship_start_date"             =>      isset($foundationData["internshipStartDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["internshipStartDate"])):null,
-            "internship_end_date"               =>      isset($foundationData["internshipEndDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["internshipEndDate"])):null,
-            "address1"                          =>      @$foundationData["address1"],
-            "address2"                          =>      @$foundationData["address2"],
-            "emergency_contact"                 =>      @$foundationData["emergencyContact"],
-            "emergency_contact_phone_number"    =>      @$foundationData["emergencyContactPhoneNumber"],
-            "created_date"                      =>      isset($foundationData['createdDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["createdDate"])):null,
-            "created_by"                        =>      isset($foundationData['createdBy'])?$foundationData['createdBy']:null,
-            "last_modified_date"                =>      isset($foundationData['lastModifiedDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["lastModifiedDate"])):null,
-            "last_modified_by"                  =>      isset($foundationData['lastModifiedBy'])?$foundationData['lastModifiedBy']:null,
-            "entrance_guard_number"	            =>	    @$foundationData["entranceGuardNumber"],
-            "seat_number"	                    =>	    @$foundationData["seatNumber"],
-            "current_address"	                =>	    @$foundationData["currentAddress"],
-            "country_code"                      =>      1
+        $dataOut = [
+            config('foundation.staff.id')                                =>      strtoupper(@$foundationData["id"]),
+            config('foundation.staff.user_id')                           =>      isset($foundationData["userID"])?strtoupper($foundationData['userID']):null,
+            config('foundation.staff.user_name')                         =>      isset($foundationData["userName"])?$foundationData['userName']:null,
+            config('foundation.staff.serial_number')                     =>      @$foundationData["serialNumber"],
+            config('foundation.staff.name_cn_long')                      =>      @$foundationData["nameCNLong"],
+            config('foundation.staff.name_en_long')                      =>      @$foundationData["nameENLong"],
+            config('foundation.staff.gender')                            =>      isset($foundationData["gender"])?$foundationData['gender']:0,
+            config('foundation.staff.company_id')                        =>      strtoupper(@$foundationData["companyID"]),
+            //config('foundation.staff.company_name')                      =>      @$foundationData["companyName"],
+            config('foundation.staff.department_id')                     =>      strtoupper(@$foundationData["departmentID"]),
+            //config('foundation.staff.department_name')                   =>      @$foundationData["departmentName"],
+            config('foundation.staff.group_id')                          =>      strtoupper(@$foundationData["groupID"]),
+            // config('foundation.staff.group_name')                        =>      @$foundationData["groupName"],
+            config('foundation.staff.position_id')                       =>      strtoupper(@$foundationData["positionID"]),
+            // config('foundation.staff.position_name')                     =>      @$foundationData["positionName"],
+            config('foundation.staff.superior_id')                       =>      strtoupper(@$foundationData["superiorID"]),
+            config('foundation.staff.identity_card_number')              =>      @$foundationData["identityCardNumber"],
+            config('foundation.staff.dob')                               =>      empty($foundationData["dob"])?null:date("Y-m-d",strtotime(@$foundationData["dob"])),
+            config('foundation.staff.nation')                            =>      @$foundationData["nation"],
+            config('foundation.staff.political_status')                  =>      isset($foundationData["politicalStatus"])?$foundationData["politicalStatus"]:null,
+            config('foundation.staff.marital_status')                    =>      isset($foundationData["maritalStatus"])?$foundationData['maritalStatus']:0,
+            config('foundation.staff.fertility_status')                  =>      isset($foundationData["fertilityStatus"])?$foundationData['fertilityStatus']:0,
+            config('foundation.staff.household_category')                =>      @$foundationData["householdCategory"],
+            config('foundation.staff.household_location')                =>      @$foundationData["householdLocation"],
+            config('foundation.staff.graduation_school')                 =>      @$foundationData["graduationSchool"],
+            config('foundation.staff.major')                             =>      @$foundationData["major"],
+            config('foundation.staff.education')                         =>      isset($foundationData["education"])?$foundationData['education']:null,
+            config('foundation.staff.bank_name')                         =>      @$foundationData["bankName"],
+            config('foundation.staff.bank_number')                       =>      @$foundationData["bankNumber"],
+            config('foundation.staff.phone_number')                      =>      @$foundationData["phoneNumber"],
+            config('foundation.staff.email')                             =>      @$foundationData["email"],
+            config('foundation.staff.hired_date')                        =>      date("Y-m-d H:i:s",strtotime(@$foundationData["hiredDate"])),
+            config('foundation.staff.contract_status')                   =>      isset($foundationData["contractStatus"])?$foundationData['contractStatus']:0,
+            config('foundation.staff.finger_print_number')               =>      @$foundationData["fingerPrintNumber"],
+            config('foundation.staff.work_place')                        =>      @$foundationData["workPlace"],
+            config('foundation.staff.position_status')                   =>      isset($foundationData["positionStatus"])?$foundationData["positionStatus"]:0,
+            config('foundation.staff.terminated_date')                   =>      isset($foundationData["terminatedDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["terminatedDate"])):null,
+            config('foundation.staff.internship_start_date')             =>      isset($foundationData["internshipStartDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["internshipStartDate"])):null,
+            config('foundation.staff.internship_end_date')               =>      isset($foundationData["internshipEndDate"])?date("Y-m-d H:i:s",strtotime(@$foundationData["internshipEndDate"])):null,
+            config('foundation.staff.address1')                          =>      @$foundationData["address1"],
+            config('foundation.staff.address2')                          =>      @$foundationData["address2"],
+            config('foundation.staff.emergency_contact')                 =>      @$foundationData["emergencyContact"],
+            config('foundation.staff.emergency_contact_phone_number')    =>      @$foundationData["emergencyContactPhoneNumber"],
+            config('foundation.staff.created_date')                      =>      isset($foundationData['createdDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["createdDate"])):null,
+            config('foundation.staff.created_by')                        =>      isset($foundationData['createdBy'])?$foundationData['createdBy']:null,
+            config('foundation.staff.last_modified_date')                =>      isset($foundationData['lastModifiedDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["lastModifiedDate"])):null,
+            config('foundation.staff.last_modified_by')                  =>      isset($foundationData['lastModifiedBy'])?$foundationData['lastModifiedBy']:null,
+            config('foundation.staff.entrance_guard_number')	         =>	     @$foundationData["entranceGuardNumber"],
+            config('foundation.staff.seat_number')	                    =>	     @$foundationData["seatNumber"],
+            config('foundation.staff.current_address')	                =>	     @$foundationData["currentAddress"],
+            config('foundation.staff.country_code')                      =>      1
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toUsInitializeModel($foundationData)
     {
-        return [
-            "id"                                =>      strtoupper($foundationData['staffID']),
-            "user_id"                           =>      empty($foundationData['userID'])?null:strtoupper($foundationData['userID']),
-            "user_name"                          =>      empty($foundationData['userName'])?null:strtoupper($foundationData['userName']),
-            "name_en_long"                      =>      @$foundationData['payrollName'],
-            "gender"                            =>      @$foundationData['gender'],
-            "department_id"                     =>      strtoupper(@$foundationData['departmentID']),
-          //  "department_name"                   =>      @$foundationData['departmentName'],
-            "group_id"                          =>      strtoupper(@$foundationData['groupID']),
-           // "group_name"                        =>      @$foundationData['groupName'],
-            "position_id"                       =>      strtoupper(@$foundationData['positionID']),
-           // "position_name"                     =>      @$foundationData['positionName'],
-            "identity_card_number"              =>      @$foundationData['ssn'],
-            "dob"                               =>      date("Y-m-d",strtotime(@$foundationData['dob'])),
-            "address1"                          =>      @$foundationData['address'],
-            "phone_number"                      =>      @$foundationData['personalMobile'],
-            "emergency_contact"                 =>      @$foundationData['emergencyContact'],
-            "emergency_contact_phone_number"    =>      @$foundationData['emergencyTel'],
-            "position_status"                   =>      @$foundationData['positionStatus'],
-            "hired_date"                        =>      date("Y-m-d",strtotime(@$foundationData['hiredDate'])),
-            "terminated_date"                   =>      date("Y-m-d",strtotime(@$foundationData['terminatedDate'])),
-            "country_code"		                =>	    2
+        $dataOut = [
+            config('foundation.staff.id')                                =>      strtoupper($foundationData['staffID']),
+            config('foundation.staff.user_id')                           =>      empty($foundationData['userID'])?null:strtoupper($foundationData['userID']),
+            config('foundation.staff.user_name')                         =>      empty($foundationData['userName'])?null:strtoupper($foundationData['userName']),
+            config('foundation.staff.name_en_long')                      =>      @$foundationData['payrollName'],
+            config('foundation.staff.gender')                            =>      @$foundationData['gender'],
+            config('foundation.staff.department_id')                     =>      strtoupper(@$foundationData['departmentID']),
+            //  config('foundation.staff.department_name')                   =>      @$foundationData['departmentName'],
+            config('foundation.staff.group_id')                          =>      strtoupper(@$foundationData['groupID']),
+            // config('foundation.staff.group_name')                        =>      @$foundationData['groupName'],
+            config('foundation.staff.position_id')                       =>      strtoupper(@$foundationData['positionID']),
+            // config('foundation.staff.position_name')                     =>      @$foundationData['positionName'],
+            config('foundation.staff.identity_card_number')              =>      @$foundationData['ssn'],
+            config('foundation.staff.dob')                               =>      date("Y-m-d",strtotime(@$foundationData['dob'])),
+            config('foundation.staff.address1')                          =>      @$foundationData['address'],
+            config('foundation.staff.phone_number')                      =>      @$foundationData['personalMobile'],
+            config('foundation.staff.emergency_contact')                 =>      @$foundationData['emergencyContact'],
+            config('foundation.staff.emergency_contact_phone_number')    =>      @$foundationData['emergencyTel'],
+            config('foundation.staff.position_status')                   =>      @$foundationData['positionStatus'],
+            config('foundation.staff.hired_date')                        =>      date("Y-m-d",strtotime(@$foundationData['hiredDate'])),
+            config('foundation.staff.terminated_date')                   =>      date("Y-m-d",strtotime(@$foundationData['terminatedDate'])),
+            config('foundation.staff.country_code')		                =>	    2
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toUserUpdateModel($foundationData)
     {
-        return [
-            "id"	                            =>	    strtoupper(@$foundationData['staffID']),
-            "username"	                        =>	    @$foundationData['userName'],
-            "user_id"	                        =>	    strtoupper(@$foundationData['userID'])
+        $dataOut = [
+            config('foundation.staff.id')	                            =>	    strtoupper(@$foundationData['staffID']),
+            config('foundation.staff.username')	                        =>	    @$foundationData['userName'],
+            config('foundation.staff.user_id')	                        =>	    strtoupper(@$foundationData['userID'])
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
 
     public static function addStaffUnitName($unit)
     {
-        if($unit["type"] == 8)
+        if($unit[config('foundation.unit.type')] == 8)
         {
-            return ["company_name"  =>  $unit["unit_name"]];
+            return [config('foundation.staff.company_name')  =>  $unit[config('foundation.unit.name')]];
         }
 
-        if($unit["type"] == 4)
+        if($unit[config('foundation.unit.type')] == 4)
         {
-            return ["department_name"  =>  $unit["unit_name"]];
+            return [config('foundation.staff.department_name')  =>  $unit[config('foundation.unit.name')]];
         }
 
-        if($unit["type"] == 2)
+        if($unit[config('foundation.unit.type')] == 2)
         {
-            return ["group_name"  =>  $unit["unit_name"]];
+            return [config('foundation.staff.group_name')  =>  $unit[config('foundation.unit.name')]];
         }
 
         return null;

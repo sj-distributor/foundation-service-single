@@ -28,21 +28,27 @@ class UnitCore
     public static function toCnModel($foundationData)
     {
         $dataOut = [
-            "id"	                            =>	    strtoupper(@$foundationData['unitID']),
-            "unit_name"	                        =>	    @$foundationData['name'],
-            "type"	                            =>	    strtoupper(@$foundationData['typeID']),
-            "parent_id"	                        =>	   empty($foundationData['parentID'])?null:strtoupper(@$foundationData['parentID']),
-            "parents_id"	                    =>	    strtoupper(@$foundationData['locationCode']),
-            "description"	                    =>	    @$foundationData['description'],
-            "leader_id"                         =>      strtoupper(@$foundationData['leaderID']),
-            "is_active"                         =>      empty($foundationData['isActive'])?0:$foundationData['isActive'],
-            "country_code"                      =>      1
+            config('foundation.unit.id')	                            =>	    strtoupper(@$foundationData['unitID']),
+            config('foundation.unit.created_date')                      =>      @$foundationData['createdDate'],
+            config('foundation.unit.created_by')                        =>      @$foundationData['createdBy'],
+            config('foundation.unit.last_modified_date')                =>      isset($foundationData['lastModifiedDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["lastModifiedDate"])):null,
+            config('foundation.unit.last_modified_by')                  =>      isset($foundationData['lastModifiedBy'])?$foundationData['lastModifiedBy']:null,
+            config('foundation.unit.name')	                        =>	    @$foundationData['name'],
+            config('foundation.unit.type')	                            =>	    strtoupper(@$foundationData['typeID']),
+            config('foundation.unit.parent_id')	                        =>	   empty($foundationData['parentID'])?null:strtoupper(@$foundationData['parentID']),
+            config('foundation.unit.parents_id')	                    =>	    strtoupper(@$foundationData['locationCode']),
+            config('foundation.unit.description')	                    =>	    @$foundationData['description'],
+            config('foundation.unit.leader_id')                         =>      strtoupper(@$foundationData['leaderID']),
+            config('foundation.unit.is_active')                         =>      empty($foundationData['isActive'])?0:$foundationData['isActive'],
+            config('foundation.unit.country_code')                      =>      1
         ];
 
         if(!empty($foundationData['leaderCountryCode']))
         {
             $dataOut['leader_country_code']     =       $foundationData['leaderCountryCode'];
         }
+
+        unset($dataOut['']);
 
         return $dataOut;
     }
@@ -50,20 +56,22 @@ class UnitCore
     public static function toUsModel($foundationData)
     {
         $dataOut =  [
-            "id"	                            =>	    strtoupper(@$foundationData['UnitID']),
-            "unit_name"	                        =>	    @$foundationData['Name'],
-            "type"	                            =>	    strtoupper(@$foundationData['TypeID']),
-            "parent_id"	                        =>	    empty($foundationData['ParentID'])?null:strtoupper(@$foundationData['ParentID']),
-            "parents_id"	                    =>	    strtoupper(@$foundationData['LocationCode']),
-            "leader_id"                         =>      strtoupper(@$foundationData['leaderID']),
-            "is_active"                         =>      isset($foundationData['Status'])?$foundationData['Status']:0,
-            "country_code"                      =>      2
+            config('foundation.unit.id')	                            =>	    strtoupper(@$foundationData['UnitID']),
+            config('foundation.unit.name')	                        =>	    @$foundationData['Name'],
+            config('foundation.unit.type')	                            =>	    strtoupper(@$foundationData['TypeID']),
+            config('foundation.unit.parent_id')	                        =>	    empty($foundationData['ParentID'])?null:strtoupper(@$foundationData['ParentID']),
+            config('foundation.unit.parents_id')	                    =>	    strtoupper(@$foundationData['LocationCode']),
+            config('foundation.unit.leader_id')                         =>      strtoupper(@$foundationData['leaderID']),
+            config('foundation.unit.is_active')                         =>      isset($foundationData['Status'])?$foundationData['Status']:0,
+            config('foundation.unit.country_code')                      =>      2
         ];
 
         if(!empty($foundationData['leaderCountryCode']))
         {
-            $dataOut['leader_country_code']     =       $foundationData['leaderCountryCode'];
+            $dataOut[config('foundation.unit.leader_country_code')]     =       $foundationData['leaderCountryCode'];
         }
+
+        unset($dataOut['']);
 
         return $dataOut;
     }
@@ -71,50 +79,70 @@ class UnitCore
 
     public static function toCnMovedModel($foundationData)
     {
-        return [
-            "id"	                            =>	    strtoupper(@$foundationData['unitID']),
-            "parent_id"	                        =>	    strtoupper(@$foundationData['parentID']),
-            "parents_id"	                    =>      strtoupper(@$foundationData['locationCode'])
+        $dataOut = [
+            config('foundation.unit.id')	                            =>	    strtoupper(@$foundationData['unitID']),
+            config('foundation.unit.parent_id')	                        =>	    strtoupper(@$foundationData['parentID']),
+            config('foundation.unit.parents_id')	                    =>      strtoupper(@$foundationData['locationCode'])
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toCnChildModel($foundationData)
     {
-        return [
-            "id"	                            =>	    strtoupper(@$foundationData['unitID']),
-            "parents_id"	                    =>      strtoupper(@$foundationData['locationCode'])
+        $dataOut = [
+            config('foundation.unit.id')	                            =>	    strtoupper(@$foundationData['unitID']),
+            config('foundation.unit.parents_id')	                    =>      strtoupper(@$foundationData['locationCode'])
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toCnInitializeModel($foundationData)
     {
-        return [
-            "id"	                            =>	    strtoupper(@$foundationData['id']),
-            "unit_name"	                        =>	    @$foundationData['name'],
-            "description"                       =>      @$foundationData['description'],
-            "type"	                            =>	    strtoupper(@$foundationData['typeID']),
-            "parent_id"	                        =>	    !empty($foundationData['parentID'])?strtoupper($foundationData['parentID']):null,
-            "leader_id"                         =>      isset($foundationData['leaderID'])?strtoupper($foundationData['leaderID']):null,
-            "leader_country_code"               =>      isset($foundationData['leaderCountryCode'])?$foundationData['leaderCountryCode']:null,
-            "parents_id"	                    =>	    isset($foundationData['locationCode'])?strtoupper($foundationData['locationCode']):null,
-            "is_active"                         =>      isset($foundationData['isActive'])?$foundationData['isActive']:0,
-            "country_code"                      =>      1
+        $dataOut = [
+            config('foundation.unit.id')	                            =>	    strtoupper(@$foundationData['id']),
+            config('foundation.unit.created_date')                      =>      @$foundationData['createdDate'],
+            config('foundation.unit.created_by')                        =>      @$foundationData['createdBy'],
+            config('foundation.unit.last_modified_date')                =>      isset($foundationData['lastModifiedDate'])?date("Y-m-d H:i:s",strtotime(@$foundationData["lastModifiedDate"])):null,
+            config('foundation.unit.last_modified_by')                  =>      isset($foundationData['lastModifiedBy'])?$foundationData['lastModifiedBy']:null,
+            config('foundation.unit.name')	                            =>	    @$foundationData['name'],
+            config('foundation.unit.description')                       =>      @$foundationData['description'],
+            config('foundation.unit.type')	                            =>	    strtoupper(@$foundationData['typeID']),
+            config('foundation.unit.parent_id')	                        =>	    !empty($foundationData['parentID'])?strtoupper($foundationData['parentID']):null,
+            config('foundation.unit.leader_id')                         =>      isset($foundationData['leaderID'])?strtoupper($foundationData['leaderID']):null,
+            config('foundation.unit.leader_country_code')               =>      isset($foundationData['leaderCountryCode'])?$foundationData['leaderCountryCode']:null,
+            config('foundation.unit.parents_id')	                    =>	    isset($foundationData['locationCode'])?strtoupper($foundationData['locationCode']):null,
+            config('foundation.unit.is_active')                         =>      isset($foundationData['isActive'])?$foundationData['isActive']:0,
+            config('foundation.unit.country_code')                      =>      1
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 
     public static function toUsInitializeModel($foundationData)
     {
-        return [
-            "id"	                            =>  	strtoupper(@$foundationData['unitID']),
-            "unit_name"	                        =>  	@$foundationData['name'],
-            "description"                       =>      @$foundationData['description'],
-            "type"	                            =>	    strtoupper(@$foundationData['typeID']),
-            "parent_id"	                        =>	    empty($foundationData['parentID'])?null:strtoupper(@$foundationData['parentID']),
-            "leader_id"                         =>      strtoupper(@$foundationData['leaderID']),
-            "leader_country_code"               =>      isset($foundationData['leaderCountryCode'])?$foundationData['leaderCountryCode']:null,
-            "parents_id"	                    =>	    strtoupper(@$foundationData['locationCode']),
-            "is_active"                         =>      isset($foundationData['status'])?$foundationData['status']:0,
-            "country_code"                      =>      2
+        $dataOut = [
+            config('foundation.unit.id')	                            =>  	strtoupper(@$foundationData['unitID']),
+            config('foundation.unit.name')	                            =>  	@$foundationData['name'],
+            config('foundation.unit.description')                       =>      @$foundationData['description'],
+            config('foundation.unit.type')	                            =>	    strtoupper(@$foundationData['typeID']),
+            config('foundation.unit.parent_id')	                        =>	    empty($foundationData['parentID'])?null:strtoupper(@$foundationData['parentID']),
+            config('foundation.unit.leader_id')                         =>      strtoupper(@$foundationData['leaderID']),
+            config('foundation.unit.leader_country_code')               =>      isset($foundationData['leaderCountryCode'])?$foundationData['leaderCountryCode']:null,
+            config('foundation.unit.parents_id')	                    =>	    strtoupper(@$foundationData['locationCode']),
+            config('foundation.unit.is_active')                         =>      isset($foundationData['status'])?$foundationData['status']:0,
+            config('foundation.unit.country_code')                      =>      2
         ];
+
+        unset($dataOut['']);
+
+        return $dataOut;
     }
 }

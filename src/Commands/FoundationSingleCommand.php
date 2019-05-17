@@ -45,7 +45,7 @@ class FoundationSingleCommand extends Command
      */
     public function handle()
     {
-        ini_set("memory_limit","1024M");
+        ini_set("memory_limit", "1024M");
 
         $queue = config('foundation.rabbitmq_queue');
 
@@ -64,7 +64,7 @@ class FoundationSingleCommand extends Command
 
         $channel->basic_qos(0, 1, false);
 
-        $channel->basic_consume($queue, $consumerTag, false, false, false, false, function($e){
+        $channel->basic_consume($queue, $consumerTag, false, false, false, false, function ($e) {
             $this->callback($e);
         });
 
@@ -84,55 +84,52 @@ class FoundationSingleCommand extends Command
      */
     private function callback($callback)
     {
+        $callback->delivery_info['channel']->basic_ack($callback->delivery_info['delivery_tag']); // 正常拿到消息后对RabbitMQ ack 回复
 
         $body = $callback->body;
 
-        $bodyData = json_decode($body,true);
+        $bodyData = json_decode($body, true);
 
-        try
-        {
+        try {
             $fromExchange = $callback->delivery_info['exchange'];
 
             $this->loggerHandler->messageQueueLog($fromExchange, $bodyData);
 
-            $this->info(date('Y-m-d H:i:s') . ' ' . $fromExchange . ' - ' . 'succeed');
-
             $this->bindEvent($fromExchange, $bodyData);
 
-        } catch (\Exception $e)
-        {
+            $this->info(date('Y-m-d H:i:s') . ' ' . $fromExchange . ' - ' . 'succeed');
+
+        } catch (\Exception $e) {
+            $this->loggerHandler->foundationErrorLog($callback->delivery_info['exchange'], $e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
 
             $this->error(date('Y-m-d H:i:s') . ' ' . $callback->delivery_info['exchange'] . ' - ' . 'error');
 
-            $this->loggerHandler->foundationErrorLog($callback->delivery_info['exchange'], $e->getMessage(). ' ' . $e->getFile() . ' ' . $e->getLine());
-
-            if(!empty($bodyData))
-            {
-                $this->publishError($callback->delivery_info['channel'],$bodyData,$e);        //把错误信息push到错误队列上
-            }
+            $this->publishError($callback->delivery_info['channel'], $bodyData, $e); // 把错误信息push到错误队列上
         }
-
-        $callback->delivery_info['channel']->basic_ack($callback->delivery_info['delivery_tag']);// RabbitMQ ack 回复
     }
 
-
-    private function publishError($channel,array $bodyData,\Exception $error)
+    /**
+     * 将错误的消息发送的error队列
+     * @param $channel
+     * @param array $bodyData
+     * @param \Exception $error
+     */
+    private function publishError($channel, array $bodyData, \Exception $error)
     {
         $channel->exchange_declare(config('foundation.rabbitmq_queue_error'), 'direct', false, true, false);
 
         $channel->queue_bind(config('foundation.rabbitmq_queue_error'), config('foundation.rabbitmq_queue_error'));
 
         $bodyData["error"] = [
-            "code"	=>	$error->getCode(),
-            "file"	=>	$error->getFile(),
-            "line"	=>	$error->getLine(),
-            "trace"	=>	$error->getTraceAsString()
+            "code" => $error->getCode(),
+            "file" => $error->getFile(),
+            "line" => $error->getLine(),
+            "trace" => $error->getTraceAsString()
         ];
-
 
         $message = new AMQPMessage(json_encode($bodyData), array('content_type' => 'application/json', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
 
-        $channel->basic_publish($message,config('foundation.rabbitmq_queue_error'));
+        $channel->basic_publish($message, config('foundation.rabbitmq_queue_error'));
     }
 
     /**
