@@ -9,7 +9,6 @@ return [
     'rabbitmq_vhost' => env('RABBITMQ_VHOST', '/'),
     'rabbitmq_login' => env('RABBITMQ_LOGIN', 'guest'),
     'rabbitmq_password' => env('RABBITMQ_PASSWORD', 'guest'),
-    "models_namespace" => "Wiltechsteam\FoundationServiceSingle",
 
     // 模型命名空间配置
     'models_namespace' =>'App\Models',
