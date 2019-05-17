@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Wiltechsteam\\FoundationService\\FoundationServiceSingleProvider"
+                "Wiltechsteam\\FoundationServiceSingle\\FoundationServiceSingleProvider"
             ]
         }
     }
