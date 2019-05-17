@@ -26,7 +26,7 @@ class StaffCNUpdatedEventListener
 
     public function handle(StaffCNUpdatedEvent $event)
     {
-       // $cnStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['cnStaffs'],[],[],1);
+        // $cnStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['cnStaffs'],[],[],1);
 
         //dd($cnStaffs[1]);
 
