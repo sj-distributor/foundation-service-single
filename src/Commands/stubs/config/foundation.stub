@@ -1,118 +1,194 @@
 <?php
-return
-[
-    /*队列配置*/
+return [
+    // 队列配置
     'rabbitmq_queue' => env('RABBITMQ_QUEUE', ''),
     'rabbitmq_queue_error' => env('RABBITMQ_QUEUE_ERROR', ''),
     'rabbitmq_host' => env('RABBITMQ_HOST', '127.0.0.1'),
     'rabbitmq_port' => env('RABBITMQ_PORT', '5672'),
     'rabbitmq_vhost' => env('RABBITMQ_VHOST', '/'),
     'rabbitmq_login' => env('RABBITMQ_LOGIN', 'guest'),
-    'rabbitmq_password' => env('RABBITMQ_PASSWORD','guest'),
+    'rabbitmq_password' => env('RABBITMQ_PASSWORD', 'guest'),
+    "models_namespace" => "Wiltechsteam\FoundationServiceSingle",
 
-    /*模型命名空间配置*/
-    'models_namespace' =>'App\Models',
-    "events"    =>  [
-        "FoundationInitializationEvent" =>   Wiltechsteam\FoundationServiceSingle\Events\FoundationInitializationEvent::class,
-        "StaffCNAddedEvent"   =>  Wiltechsteam\FoundationServiceSingle\Events\StaffCNAddedEvent::class,
-        "StaffCNUpdatedEvent"   =>  Wiltechsteam\FoundationServiceSingle\Events\StaffCNUpdatedEvent::class,
-        "UserAccountCNAddedEvent"   =>  Wiltechsteam\FoundationServiceSingle\Events\UserAccountCNAddedEvent::class,
-        "PositionCNAddedEvent"      =>   Wiltechsteam\FoundationServiceSingle\Events\PositionCNAddedEvent::class,
-        "PositionCNDeletedEvent"  =>  Wiltechsteam\FoundationServiceSingle\Events\PositionCNDeletedEvent::class,
-        "PositionCNUpdatedEvent"  =>  Wiltechsteam\FoundationServiceSingle\Events\PositionCNUpdatedEvent::class,
-        "UnitCNAddedEvent"  =>  Wiltechsteam\FoundationServiceSingle\Events\UnitCNAddedEvent::class,
-        "UnitCNDeletedEvent"  =>  Wiltechsteam\FoundationServiceSingle\Events\UnitCNDeletedEvent::class ,
-        "UnitCNUpdatedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\UnitCNUpdatedEvent::class ,
-        "UnitCNMovedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\UnitCNMovedEvent::class ,
-        "StaffUSAddedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\StaffUSAddedEvent::class ,
-        "StaffUSUpdatedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\StaffUSUpdatedEvent::class ,
-        "PositionUSAddedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\PositionUSAddedEvent::class ,
-        "PositionUSDeletedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\PositionUSDeletedEvent::class ,
-        "PositionUSUpdatedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\PositionUSUpdatedEvent::class  ,
-        "UnitUSAddedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\UnitUSAddedEvent::class ,
-        "UnitUSUpdatedEvent"  => Wiltechsteam\FoundationServiceSingle\Events\UnitUSUpdatedEvent::class
+    // staff表字断映射设置 'field' => '表对应字段名'
+    'staff' => [
+        "id" => "id",
+        "user_id" => "user_id",
+        "user_name" => "user_name",
+        "serial_number" => "serial_number",
+        "name_cn_long" => "name_cn_long",
+        "name_en_long" => "name_en_long",
+        "gender" => "gender",
+        "company_id" => "company_id",
+        "company_name" => "company_name",
+        "department_id" => "department_id",
+        "department_name" => "department_name",
+        "group_id" => "group_id",
+        "group_name" => "group_name",
+        "position_id" => "position_id",
+        "position_name" => "position_name",
+        "superior_id" => "superior_id",
+        "identity_card_number" => "identity_card_number",
+        "dob" => "dob",
+        "nation" => "nation",
+        "political_status" => "political_status",
+        "marital_status" => "marital_status",
+        "fertility_status" => "fertility_status",
+        "household_category" => "household_category",
+        "household_location" => "household_location",
+        "graduation_school" => "graduation_school",
+        "major" => "major",
+        "education" => "education",
+        "bank_name" => "bank_name",
+        "bank_number" => "bank_number",
+        "phone_number" => "phone_number",
+        "email" => "email",
+        "hired_date" => "hired_date",
+        "contract_status" => "contract_status",
+        "finger_print_number" => "finger_print_number",
+        "work_place" => "work_place",
+        "position_status" => "position_status",
+        "terminated_date" => "terminated_date",
+        "internship_start_date" => "internship_start_date",
+        "internship_end_date" => "internship_end_date",
+        "address1" => "address1",
+        "address2" => "address2",
+        "emergency_contact" => "emergency_contact",
+        "emergency_contact_phone_number" => "emergency_contact_phone_number",
+        "created_date" => "created_date",
+        "created_by" => "created_by",
+        "last_modified_date" => "last_modified_date",
+        "last_modified_by" => "last_modified_by",
+        "entrance_guard_number" => "entrance_guard_number",
+        "seat_number" => "seat_number",
+        "current_address" => "current_address",
+        "country_code" => "country_code"
     ],
-    /*事件监听者设置*/
-    'listens' =>
-    [
-         // Foundation Init
-        Wiltechsteam\FoundationServiceSingle\Events\FoundationInitializationEvent::class =>
+
+    // unit表字断映射设置 'field' => '表对应字段名'
+    'unit' => [
+        "id" => "id",
+        "created_date" => "created_date",
+        "created_by" => "created_by",
+        "last_modified_date" => "last_modified_date",
+        "last_modified_by" => "last_modified_by",
+        "name" => "unit_name",
+        "description" => "description",
+        "type" => "type",
+        "parent_id" => "parent_id",
+        "leader_id" => "leader_id",
+        "leader_country_code" => "leader_country_code",
+        "parents_id" => "parents_id",
+        "is_active" => "is_active",
+        "country_code" => "country_code"
+    ],
+
+    // position表字断映射设置 'field' => '表对应字段名'
+    'position' => [
+        "id" => "id",
+        "created_date" => "created_date",
+        "created_by" => "created_by",
+        "last_modified_date" => "last_modified_date",
+        "last_modified_by" => "last_modified_by" ,
+        "name" => "name",
+        "description" => "description",
+        "unit_id" => "unit_id",
+        "is_active" => "is_active",
+        "country_code" => "country_code"
+    ],
+
+    // Event别名绑定配置
+    "events" => [
+        "FoundationInitializationEvent" => Wiltechsteam\FoundationServiceSingle\Events\FoundationInitializationEvent::class,
+        "StaffCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffCNAddedEvent::class,
+        "StaffCNUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffCNUpdatedEvent::class,
+        "UserAccountCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UserAccountCNAddedEvent::class,
+        "PositionCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNAddedEvent::class,
+        "PositionCNDeletedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNDeletedEvent::class,
+        "PositionCNUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNUpdatedEvent::class,
+        "UnitCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitCNAddedEvent::class,
+        "UnitCNDeletedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitCNDeletedEvent::class,
+        "UnitCNUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitCNUpdatedEvent::class,
+        "UnitCNMovedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitCNMovedEvent::class,
+        "StaffUSAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffUSAddedEvent::class,
+        "StaffUSUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffUSUpdatedEvent::class,
+        "PositionUSAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionUSAddedEvent::class,
+        "PositionUSDeletedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionUSDeletedEvent::class,
+        "PositionUSUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionUSUpdatedEvent::class,
+        "UnitUSAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitUSAddedEvent::class,
+        "UnitUSUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UnitUSUpdatedEvent::class
+    ],
+
+    // Event 监听绑定
+    "listens" =>
         [
-            Wiltechsteam\FoundationServiceSingle\Listeners\FoundationInitializationEventListener::class,
-        ],
-        // CN Staff
-        Wiltechsteam\FoundationServiceSingle\Events\StaffCNAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\StaffCNAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\StaffCNUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\StaffCNUpdatedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\UserAccountCNAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UserAccountCNAddedEventListener::class,
-        ],
-        // CN Position
-        Wiltechsteam\FoundationServiceSingle\Events\PositionCNAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\PositionCNDeletedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNDeletedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\PositionCNUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNUpdatedEventListener::class,
-        ],
-        // CN Unit
-        Wiltechsteam\FoundationServiceSingle\Events\UnitCNAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\UnitCNDeletedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNDeletedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\UnitCNUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNUpdatedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\UnitCNMovedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNMovedEventListener::class,
-        ],
-        // US Staff
-        Wiltechsteam\FoundationServiceSingle\Events\StaffUSAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\StaffUSAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\StaffUSUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\StaffUSUpdatedEventListener::class,
-        ],
-        // US Position
-        Wiltechsteam\FoundationServiceSingle\Events\PositionUSAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\PositionUSDeletedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSDeletedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\PositionUSUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSUpdatedEventListener::class,
-        ],
-        // US Unit
-        Wiltechsteam\FoundationServiceSingle\Events\UnitUSAddedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitUSAddedEventListener::class,
-        ],
-        Wiltechsteam\FoundationServiceSingle\Events\UnitUSUpdatedEvent::class =>
-        [
-            Wiltechsteam\FoundationServiceSingle\Listeners\UnitUSUpdatedEventListener::class,
-        ],
-    ]
+            // Foundation Init
+            Wiltechsteam\FoundationServiceSingle\Events\FoundationInitializationEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\FoundationInitializationEventListener::class,
+            ],
+
+            // CN Staff
+            Wiltechsteam\FoundationServiceSingle\Events\StaffCNAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\StaffCNAddedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\StaffCNUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\StaffCNUpdatedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\UserAccountCNAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UserAccountCNAddedEventListener::class,
+            ],
+
+            // CN Position
+            Wiltechsteam\FoundationServiceSingle\Events\PositionCNAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNAddedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\PositionCNDeletedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNDeletedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\PositionCNUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionCNUpdatedEventListener::class,
+            ],
+
+            // CN Unit
+            Wiltechsteam\FoundationServiceSingle\Events\UnitCNAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNAddedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\UnitCNDeletedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNDeletedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\UnitCNUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNUpdatedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\UnitCNMovedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitCNMovedEventListener::class,
+            ],
+
+            // US Staff
+            Wiltechsteam\FoundationServiceSingle\Events\StaffUSAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\StaffUSAddedEventListener::class,
+            ],
+
+            Wiltechsteam\FoundationServiceSingle\Events\StaffUSUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\StaffUSUpdatedEventListener::class,
+            ],
+
+            // US Position
+            Wiltechsteam\FoundationServiceSingle\Events\PositionUSAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSAddedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\PositionUSDeletedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSDeletedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\PositionUSUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\PositionUSUpdatedEventListener::class,
+            ],
+
+            // US Unit
+            Wiltechsteam\FoundationServiceSingle\Events\UnitUSAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitUSAddedEventListener::class,
+            ],
+            Wiltechsteam\FoundationServiceSingle\Events\UnitUSUpdatedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UnitUSUpdatedEventListener::class,
+            ],
+        ]
 ];
