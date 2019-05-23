@@ -50,7 +50,7 @@ class StaffCore
 
             if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.department_id')])
             {
-                $staff[config('foundation.staff.department_id')] = $unit[config('foundation.unit.name')];
+                $staff[config('foundation.staff.department_name')] = $unit[config('foundation.unit.name')];
             }
 
             if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.group_id')])
