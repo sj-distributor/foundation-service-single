@@ -105,7 +105,7 @@ class StaffCore
         $dataOut = [
             config('foundation.staff.id')						        =>	    strtoupper(@$foundationData["StaffID"]),
             config('foundation.staff.user_id')		                    =>	    strtoupper(@$foundationData["UserID"]),
-            config('foundation.staff.username')		                    =>	    @$foundationData["UserName"],
+            config('foundation.staff.user_name')		                    =>	    @$foundationData["UserName"],
             config('foundation.staff.name_en_long')				        =>	    @$foundationData["PayrollName"],
             config('foundation.staff.gender')                            =>      @$foundationData['Gender'],
             config('foundation.staff.department_id')				        =>	    strtoupper(@$foundationData["DepartmentID"]),
@@ -290,7 +290,7 @@ class StaffCore
     {
         $dataOut = [
             config('foundation.staff.id')	                            =>	    strtoupper(@$foundationData['staffID']),
-            config('foundation.staff.username')	                        =>	    @$foundationData['userName'],
+            config('foundation.staff.user_name')	                        =>	    @$foundationData['userName'],
             config('foundation.staff.user_id')	                        =>	    strtoupper(@$foundationData['userID'])
         ];
 
