@@ -1,6 +1,7 @@
 {
     "name": "sj-distributor/foundation-service-single",
     "description": "foundation single",
+    "license": "MIT",
     "authors": [
         {
             "name": "Ben",
