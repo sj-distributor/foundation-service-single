@@ -17,6 +17,6 @@ class UnitCNDeletedEventListener
     {
         $unitCNModel = new $this->unitPath();
 
-        $unitCNModel::where('id', '=', $event->data['message']['unitID'])->delete();
+        $unitCNModel::where(config('foundation.unit.id'), '=', $event->data['message']['unitID'])->delete();
     }
 }

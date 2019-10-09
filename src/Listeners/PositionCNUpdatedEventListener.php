@@ -29,6 +29,6 @@ class PositionCNUpdatedEventListener
 
         $staffModel = new $this->staffPath();
 
-        $staffModel->where("position_id",$positionData['id'])->update(["position_name"  =>  $positionData["name"]]);
+        $staffModel->where(config('foundation.staff.position_id'),$positionData['id'])->update([config('foundation.staff.position_name')  =>  $positionData["name"]]);
     }
 }

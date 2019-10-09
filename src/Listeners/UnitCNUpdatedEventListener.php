@@ -23,11 +23,10 @@ class UnitCNUpdatedEventListener
         $unitData = UnitCore::toCnModel($event->data['message']['entity']);
 
         $unitCNModel = new $this->unitPath();
-
         $unitCNModel = $unitCNModel->findOrFail($unitData['id']);
-
+    
         $unitCNModel->fill($unitData);
-
+        
         $unitCNModel->save();
 
         if(isset($event->data['message']['childEntities']))
@@ -50,24 +49,26 @@ class UnitCNUpdatedEventListener
 
         $field = null;
 
-        if($unitData["type"] == 8)
+        
+
+        if($unitData[config('foundation.unit.type')] == 8)
         {
             $field = "company_id";
         }
 
-        if($unitData["type"] == 4)
+        if($unitData[config('foundation.unit.type')] == 4)
         {
             $field = "department_id";
         }
 
-        if($unitData["type"] == 2)
+        if($unitData[config('foundation.unit.type')] == 2)
         {
             $field = "group_id";
         }
 
         $staffModel->where($field,$unitData['id'])->update(StaffCore::addStaffUnitName($unitData));
 
-        $staffModel->where($field,$unitData['id'])->where("id","!=", $unitData["leader_id"])->update(["superior_id" =>  $unitData["leader_id"]]);
+        $staffModel->where($field,$unitData['id'])->where("id","!=", $unitData[config('foundation.unit.leader_id')])->update([config('foundation.staff.superior_id') =>  $unitData[config('foundation.unit.leader_id')]]);
 
     }
 

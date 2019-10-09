@@ -33,9 +33,14 @@ class StaffCore
                 $item = self::addDepartmentNameAndGroupName($item,$unitList);
                 $item = self::addPositionName($item,$positionList);
                 $item = self::addSuperiorId($item,$unitList);
+                $item = self::addCompanyName($item, $unitList);
             }else
             {
                 $item =self::toUsInitializeModel($staff);
+                $item = self::addDepartmentNameAndGroupName($item,$unitList);
+                $item = self::addPositionName($item,$positionList);
+                $item = self::addSuperiorId($item,$unitList);
+               
             }
             $staffData[] = $item;
         }
@@ -57,6 +62,19 @@ class StaffCore
             {
                 $staff[config('foundation.staff.group_name')] = $unit[config('foundation.unit.name')];
             }
+        }
+        return $staff;
+    }
+
+    public static function addCompanyName($staff,$unitList)
+    {
+        foreach ($unitList as $unit)
+        {
+            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.company_id')])
+            {
+                    $staff[config('foundation.staff.company_name')] = $unit[config('foundation.unit.name')];
+            }
+            
         }
         return $staff;
     }

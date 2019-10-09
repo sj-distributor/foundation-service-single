@@ -49,22 +49,22 @@ class UnitCNMovedEventListener
 
         $field = null;
 
-        if($unitCNModel["type"] == 8)
+        if($unitCNModel[config('foundation.unit.type')] == 8)
         {
             $field = "company_id";
         }
 
-        if($unitCNModel["type"] == 4)
+        if($unitCNModel[config('foundation.unit.type')] == 4)
         {
             $field = "department_id";
         }
 
-        if($unitCNModel["type"] == 2)
+        if($unitCNModel[config('foundation.unit.type')] == 2)
         {
             $field = "group_id";
         }
 
-        $staffModel->where($field,$unitCNModel['id'])->update(StaffCore::addStaffUnitName($unitCNModel));
+        $staffModel->where($field,$unitCNModel[config('foundation.unit.id')])->update(StaffCore::addStaffUnitName($unitCNModel));
 
 
     }

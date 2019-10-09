@@ -24,21 +24,22 @@ class StaffCNAddedEventListener
 
     public function handle(StaffCNAddedEvent $event)
     {
-        $staffData = StaffCore::toCnModel(  $event->data['message']);
+        $staffData = StaffCore::toCnModel($event->data['message']);
 
 
         $unitModel = new $this->unitPath();
 
-        $unitList = $unitModel->where("country_code",1)->get();
+        $unitList = $unitModel->where(config('foundation.unit.country_code'),1)->get();
 
         if(count($unitList) > 0)
         {
             $staffData = StaffCore::addDepartmentNameAndGroupName($staffData,$unitList);
+            $staffData = StaffCore::addCompanyName($staffData, $unitList);
         }
 
         $positionModel = new $this->positionPath();
 
-        $positionList = $positionModel->where("id",$staffData["position_id"])->get();
+        $positionList = $positionModel->where(config('foundation.position.id'),$staffData[config('foundation.staff.position_id')])->get();
 
         if(!empty($positionList))
         {
