@@ -105,6 +105,7 @@ return [
         "StaffCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffCNAddedEvent::class,
         "StaffCNUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\StaffCNUpdatedEvent::class,
         "UserAccountCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UserAccountCNAddedEvent::class,
+        "UserAccountUSAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\UserAccountUSAddedEvent::class,
         "PositionCNAddedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNAddedEvent::class,
         "PositionCNDeletedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNDeletedEvent::class,
         "PositionCNUpdatedEvent" => Wiltechsteam\FoundationServiceSingle\Events\PositionCNUpdatedEvent::class,
@@ -172,6 +173,10 @@ return [
 
             Wiltechsteam\FoundationServiceSingle\Events\StaffUSUpdatedEvent::class => [
                 Wiltechsteam\FoundationServiceSingle\Listeners\StaffUSUpdatedEventListener::class,
+            ],
+
+            Wiltechsteam\FoundationServiceSingle\Events\UserAccountUSAddedEvent::class => [
+                Wiltechsteam\FoundationServiceSingle\Listeners\UserAccountUSAddedEventListener::class,
             ],
 
             // US Position
