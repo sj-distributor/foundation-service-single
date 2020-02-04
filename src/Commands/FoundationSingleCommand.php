@@ -55,7 +55,17 @@ class FoundationSingleCommand extends Command
             config('foundation.rabbitmq_host'),
             config('foundation.rabbitmq_port'),
             config('foundation.rabbitmq_login'),
-            config('foundation.rabbitmq_password')
+            config('foundation.rabbitmq_password'),
+            '/',
+            false,
+            'AMQPLAIN',
+            null,
+            'en_US',
+            120,
+            120,
+            null,
+            false,
+            60
         );
 
         $channel = $connection->channel();
