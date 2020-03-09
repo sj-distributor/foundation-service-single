@@ -23,8 +23,8 @@ class CreatePositionsTable extends Migration
             $table->uuid('created_by')->nullable();
             $table->dateTime('last_modified_date')->nullable();
             $table->uuid('last_modified_by')->nullable();
-            $table->unsignedTinyInteger('country_code')->nullable();
-            $table->unsignedTinyInteger('is_active')->nullable();
+            $table->tinyInteger('country_code')->nullable();
+            $table->tinyInteger('is_active')->nullable();
         });
     }
 
