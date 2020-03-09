@@ -37,7 +37,7 @@ class CreateStaffsTable extends Migration
             $table->char('graduation_school', 50)->nullable();
             $table->char('major', 30)->nullable();
             $table->char('identity_card_number', 25)->nullable();
-            $table->char('phone_number', 20)->nullable();
+            $table->char('phone_number', 50)->nullable();
             $table->char('email', 50)->nullable();
             $table->date('internship_start_date')->nullable();
             $table->date('hired_date')->nullable();
