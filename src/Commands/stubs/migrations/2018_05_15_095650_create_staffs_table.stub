@@ -27,7 +27,7 @@ class CreateStaffsTable extends Migration
             $table->string('position_name', 200)->nullable();
             $table->uuid('group_id')->nullable();
             $table->string('group_name', 200)->nullable();
-            $table->char('name_cn_long', 15)->nullable();
+            $table->char('name_cn_long', 50)->nullable();
             $table->char('name_en_long', 50)->nullable();
             $table->tinyInteger('gender')->nullable();
             $table->tinyInteger('marital_status')->nullable();
