@@ -33,7 +33,7 @@ class StaffUSAddedEventListener
 
         if(count($unitList) > 0){
             $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitList);
-            
+            $staffData = StaffCore::addCompanyName($staffData, $unitList);
         }
 
         $positionModel = new $this->positionPath();

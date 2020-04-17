@@ -65,7 +65,10 @@ return [
         "entrance_guard_number" => "entrance_guard_number",
         "seat_number" => "seat_number",
         "current_address" => "current_address",
-        "country_code" => "country_code"
+        "country_code" => "country_code",
+        "location_description" => "location_description",
+        "driver_code" => "driver_code",
+        "badge" => "badge",
     ],
 
     // unit表字断映射设置 'field' => '表对应字段名'

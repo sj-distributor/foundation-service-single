@@ -40,7 +40,7 @@ class StaffCore
                 $item = self::addDepartmentNameAndGroupName($item,$unitList);
                 $item = self::addPositionName($item,$positionList);
                 $item = self::addSuperiorId($item,$unitList);
-               
+                $item = self::addCompanyName($item, $unitList);
             }
             $staffData[] = $item;
         }
@@ -142,6 +142,11 @@ class StaffCore
             config('foundation.staff.hired_date')				        =>	    date("Y-m-d H:i:s",strtotime(@$foundationData["HiredDate"])),
             config('foundation.staff.terminated_date')                  =>      date("Y-m-d",strtotime(@$foundationData['TerminatedDate'])),
             config('foundation.staff.country_code')		                =>	    2,
+            config('foundation.staff.company_id')		                 =>	     @$foundationData['companyId'],
+            config('foundation.staff.company_name')		                 =>	     @$foundationData['companyName'],
+            config('foundation.staff.location_description')		         =>	     @$foundationData['locationDescription'],
+            config('foundation.staff.driver_code')		                 =>	     @$foundationData['driverCode'],
+            config('foundation.staff.badge')		                     =>	     @$foundationData['badge'],
         ];
 
         unset($dataOut['']);
@@ -296,7 +301,12 @@ class StaffCore
             config('foundation.staff.position_status')                   =>      @$foundationData['positionStatus'],
             config('foundation.staff.hired_date')                        =>      date("Y-m-d",strtotime(@$foundationData['hiredDate'])),
             config('foundation.staff.terminated_date')                   =>      date("Y-m-d",strtotime(@$foundationData['terminatedDate'])),
-            config('foundation.staff.country_code')		                =>	    2
+            config('foundation.staff.country_code')		                 =>	     2,
+            config('foundation.staff.company_id')		                 =>	     @$foundationData['companyId'],
+            config('foundation.staff.company_name')		                 =>	     @$foundationData['companyName'],
+            config('foundation.staff.location_description')		         =>	     @$foundationData['locationDescription'],
+            config('foundation.staff.driver_code')		                 =>	     @$foundationData['driverCode'],
+            config('foundation.staff.badge')		                     =>	     @$foundationData['badge'],
         ];
 
         unset($dataOut['']);
