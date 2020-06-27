@@ -142,11 +142,11 @@ class StaffCore
             config('foundation.staff.hired_date')				        =>	    date("Y-m-d H:i:s",strtotime(@$foundationData["HiredDate"])),
             config('foundation.staff.terminated_date')                  =>      date("Y-m-d",strtotime(@$foundationData['TerminatedDate'])),
             config('foundation.staff.country_code')		                =>	    2,
-            config('foundation.staff.company_id')		                 =>	     @$foundationData['companyId'],
-            config('foundation.staff.company_name')		                 =>	     @$foundationData['companyName'],
-            config('foundation.staff.location_description')		         =>	     @$foundationData['locationDescription'],
-            config('foundation.staff.driver_code')		                 =>	     @$foundationData['driverCode'],
-            config('foundation.staff.badge')		                     =>	     @$foundationData['badge'],
+            config('foundation.staff.company_id')		                 =>	     @$foundationData['CompanyId'],
+            config('foundation.staff.company_name')		                 =>	     @$foundationData['CompanyName'],
+            config('foundation.staff.location_description')		         =>	     @$foundationData['LocationDescription'],
+            config('foundation.staff.driver_code')		                 =>	     @$foundationData['DriverCode'],
+            config('foundation.staff.badge')		                     =>	     @$foundationData['Badge'],
         ];
 
         unset($dataOut['']);

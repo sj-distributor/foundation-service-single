@@ -15,11 +15,11 @@ class StaffUSUpdatedEventListener
 
     public function __construct()
     {
-        $this->staffPath = config('foundation.models_namespace').'\Staff';
+        $this->staffPath = config('foundation.models_namespace') . '\Staff';
 
-        $this->unitPath = config('foundation.models_namespace').'\Unit';
+        $this->unitPath = config('foundation.models_namespace') . '\Unit';
 
-        $this->positionPath = config('foundation.models_namespace').'\Position';
+        $this->positionPath = config('foundation.models_namespace') . '\Position';
     }
 
     public function handle(StaffUSUpdatedEvent $event)
@@ -29,21 +29,19 @@ class StaffUSUpdatedEventListener
 
         $unitModel = new $this->unitPath();
 
-        $unitList = $unitModel->where(config('foundation.unit.country_code'),1)->get();
+        $unitList = $unitModel->where(config('foundation.unit.country_code'), 2)->get();
 
-        if(count($unitList) > 0)
-        {
+        if (count($unitList) > 0) {
             $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitList);
             $staffData = StaffCore::addCompanyName($staffData, $unitList);
         }
 
         $positionModel = new $this->positionPath();
 
-        $positionList = $positionModel->where(config('foundation.position.id'),$staffData[config('foundation.staff.position_id')])->get();
+        $positionList = $positionModel->where(config('foundation.position.id'), $staffData[config('foundation.staff.position_id')])->get();
 
-        if(!empty($positionList))
-        {
-            $staffData = StaffCore::addPositionName($staffData,$positionList);
+        if (!empty($positionList)) {
+            $staffData = StaffCore::addPositionName($staffData, $positionList);
         }
 
         $staffUSModel = new $this->staffPath();
