@@ -67,6 +67,7 @@ return [
         "current_address" => "current_address",
         "country_code" => "country_code",
         "location_description" => "location_description",
+        "location_name" => "location_name",
         "driver_code" => "driver_code",
         "badge" => "badge",
     ],
