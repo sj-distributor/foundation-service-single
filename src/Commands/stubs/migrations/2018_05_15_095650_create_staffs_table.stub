@@ -68,7 +68,6 @@ class CreateStaffsTable extends Migration
             $table->char('seat_number', 50)->nullable();
             $table->string('current_address', 250)->nullable();
             $table->tinyInteger('country_code')->nullable();
-            $table->char('location_description', 50)->nullable();
             $table->char('location_name', 80)->nullable();
             $table->char('driver_code', 50)->nullable();
             $table->char('badge', 50)->nullable();

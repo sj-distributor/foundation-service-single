@@ -22,12 +22,16 @@ class FoundationServiceMakeCommand extends Command
 
     protected $loggerHandler;
 
+    protected $modelsPath;
+
     /**
      * FoundationServiceCommand constructor.
      */
     public function __construct()
     {
         parent::__construct();
+
+        $this->modelsPath = str_replace('App/', 'app/', str_replace('\\', '/', config('foundation.models_namespace')));
     }
 
     /**
@@ -37,42 +41,41 @@ class FoundationServiceMakeCommand extends Command
     public function handle()
     {
         $this->createDirectories();
-        if(!file_exists(base_path('config/foundation.php')))
-        {
+        if (!file_exists(base_path('config/foundation.php'))) {
             copy(
-                __DIR__.'/stubs/config/foundation.stub',
+                __DIR__ . '/stubs/config/foundation.stub',
                 base_path('config/foundation.php')
             );
         }
 
         copy(
-            __DIR__.'/stubs/migrations/2018_05_15_095650_create_staffs_table.stub',
+            __DIR__ . '/stubs/migrations/2018_05_15_095650_create_staffs_table.stub',
             database_path('migrations/2018_05_15_095650_create_staffs_table.php')
         );
 
         copy(
-            __DIR__.'/stubs/migrations/2018_05_15_100005_create_positions_table.stub',
+            __DIR__ . '/stubs/migrations/2018_05_15_100005_create_positions_table.stub',
             database_path('migrations/2018_05_15_100005_create_positions_table.php')
         );
 
         copy(
-            __DIR__.'/stubs/migrations/2018_05_15_100033_create_units_table.stub',
+            __DIR__ . '/stubs/migrations/2018_05_15_100033_create_units_table.stub',
             database_path('migrations/2018_05_15_100033_create_units_table.php')
         );
 
 
         file_put_contents(
-            base_path(config('foundation.models_namespace').'/Staff.php'),
+            base_path($this->modelsPath . '/Staff.php'),
             $this->compileStaffCNModelStub()
         );
 
         file_put_contents(
-            base_path(config('foundation.models_namespace').'/Position.php'),
+            base_path($this->modelsPath . '/Position.php'),
             $this->compilePositionCNModelStub()
         );
 
         file_put_contents(
-            base_path(config('foundation.models_namespace').'/Unit.php'),
+            base_path($this->modelsPath . '/Unit.php'),
             $this->compileUnitCNModelStub()
         );
 
@@ -84,11 +87,11 @@ class FoundationServiceMakeCommand extends Command
      */
     protected function createDirectories()
     {
-        if (! is_dir($directory = base_path(config('foundation.models_namespace')))) {
+        if (!is_dir($directory = base_path($this->modelsPath))) {
             mkdir($directory, 0755, true);
         }
 
-        if (! is_dir($directory = 'database\migrations')) {
+        if (!is_dir($directory = 'database/migrations')) {
             mkdir($directory, 0755, true);
         }
     }
@@ -98,7 +101,7 @@ class FoundationServiceMakeCommand extends Command
         return str_replace(
             '{{namespace}}',
             config('foundation.models_namespace'),
-            file_get_contents(__DIR__.'/stubs/models/Staff.stub')
+            file_get_contents(__DIR__ . '/stubs/models/Staff.stub')
         );
     }
 
@@ -108,7 +111,7 @@ class FoundationServiceMakeCommand extends Command
         return str_replace(
             '{{namespace}}',
             config('foundation.models_namespace'),
-            file_get_contents(__DIR__.'/stubs/models/Position.stub')
+            file_get_contents(__DIR__ . '/stubs/models/Position.stub')
         );
     }
 
@@ -117,7 +120,7 @@ class FoundationServiceMakeCommand extends Command
         return str_replace(
             '{{namespace}}',
             config('foundation.models_namespace'),
-            file_get_contents(__DIR__.'/stubs/models/Unit.stub')
+            file_get_contents(__DIR__ . '/stubs/models/Unit.stub')
         );
     }
 
