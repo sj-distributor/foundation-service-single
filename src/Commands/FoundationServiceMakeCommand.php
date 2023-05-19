@@ -2,13 +2,10 @@
 
 namespace Wiltechsteam\FoundationServiceSingle\Commands;
 
-use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Console\Command;
 
 class FoundationServiceMakeCommand extends Command
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
