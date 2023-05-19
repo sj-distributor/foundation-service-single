@@ -40,7 +40,7 @@ class FoundationInitializationEventListener
             $usUnits = UnitCore::createInitializeList($event->data['message']['usUnits'],2);
             $cnStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['cnStaffs'],$cnUnits,$cnPositions,1);
             $usStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['usStaffs'],$usUnits,$usPositions,2);
-            $positionModel::truncate();
+            $positionModel::query()->delete();
             foreach ($cnPositions as $cnPosition)
             {
                 $positionModel::insert($cnPosition);
@@ -51,7 +51,7 @@ class FoundationInitializationEventListener
                 $positionModel::insert($usPosition);
             }
 
-            $staffModel::truncate();
+            $staffModel::query()->delete();
             foreach ($cnStaffs as $cnStaff)
             {
                 $staffModel::insert($cnStaff);
@@ -63,7 +63,7 @@ class FoundationInitializationEventListener
             }
 
 
-            $unitModel::truncate();
+            $unitModel::query()->delete();
             foreach ($cnUnits as $cnUnit)
             {
                 $unitModel::insert($cnUnit);
