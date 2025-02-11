@@ -24,63 +24,64 @@ class StaffCore
 
     public static function createInitializeListUnitAndPosition($staffList,$unitList,$positionList,$countryCode)
     {
+        $unitMapping = array();
+        foreach ($unitList as $unit)
+        {
+            $unitMapping[$unit[config('foundation.unit.id')]] = $unit;
+        }
+
+        $positionMapping = array();
+        foreach ($positionList as $position)
+        {
+            $positionMapping[$position[config('foundation.position.id')]] = $position;
+        }
+
         $staffData  =  array();
         foreach ($staffList as $staff)
         {
             if($countryCode == 1)
             {
                 $item = self::toCnInitializeModel($staff);
-                $item = self::addDepartmentNameAndGroupName($item,$unitList);
-                $item = self::addPositionName($item,$positionList);
-                $item = self::addSuperiorId($item,$unitList);
-                $item = self::addCompanyName($item, $unitList);
+                $item = self::addDepartmentNameAndGroupName($item, $unitMapping);
+                $item = self::addPositionName($item, $positionMapping);
+                $item = self::addSuperiorId($item, $unitMapping);
+                $item = self::addCompanyName($item, $unitMapping);
             }else
             {
                 $item =self::toUsInitializeModel($staff);
-                $item = self::addDepartmentNameAndGroupName($item,$unitList);
-                $item = self::addPositionName($item,$positionList);
-                $item = self::addSuperiorId($item,$unitList);
-                $item = self::addCompanyName($item, $unitList);
+                $item = self::addDepartmentNameAndGroupName($item, $unitMapping);
+                $item = self::addPositionName($item, $positionMapping);
+                $item = self::addSuperiorId($item, $unitMapping);
+                $item = self::addCompanyName($item, $unitMapping);
             }
             $staffData[] = $item;
         }
         return $staffData;
     }
 
-
-    public static function addDepartmentNameAndGroupName($staff,$unitList)
+    public static function addDepartmentNameAndGroupName($staff, $unitMapping)
     {
-        foreach ($unitList as $unit)
-        {
+        $departmentId = $staff[config('foundation.staff.department_id')];
+        $groupId = $staff[config('foundation.staff.group_id')];
+        $unitKey = config('foundation.unit.name');
 
-            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.department_id')])
-            {
-                $staff[config('foundation.staff.department_name')] = $unit[config('foundation.unit.name')];
-            }
+        $staff[config('foundation.staff.department_name')] = isset($unitMapping[$departmentId]) ? $unitMapping[$departmentId][$unitKey] : null;
+        $staff[config('foundation.staff.group_name')] = isset($unitMapping[$groupId]) ? $unitMapping[$groupId][$unitKey] : null;
 
-            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.group_id')])
-            {
-                $staff[config('foundation.staff.group_name')] = $unit[config('foundation.unit.name')];
-            }
-        }
         return $staff;
     }
 
-    public static function addCompanyName($staff,$unitList)
+    public static function addCompanyName($staff, $unitMapping)
     {
-        foreach ($unitList as $unit)
-        {
-            if($unit[config('foundation.unit.id')] == $staff[config('foundation.staff.company_id')])
-            {
-                    $staff[config('foundation.staff.company_name')] = $unit[config('foundation.unit.name')];
-            }
-            
-        }
+        $companyId = $staff[config('foundation.staff.company_id')];
+        $unitKey = config('foundation.unit.name');
+
+        $staff[config('foundation.staff.company_name')] = isset($unitMapping[$companyId]) ? $unitMapping[$companyId][$unitKey] : null;
+
         return $staff;
     }
 
-
-    public static function addSuperiorId($staff,$unitList)
+    public static function addSuperiorId($staff, $unitMapping)
     {
         $unitId = $staff[config('foundation.staff.group_id')];
 
@@ -94,27 +95,20 @@ class StaffCore
             $unitId = $staff[config('foundation.staff.company_id')];
         }
 
-        foreach ($unitList as $unit)
-        {
+        $leaderKey = config('foundation.unit.leader_id');
 
-            if($unit[config('foundation.unit.id')] == $unitId)
-            {
-                $staff[config('foundation.staff.superior_id')] = $unit[config('foundation.unit.leader_id')];
-            }
-        }
+        $staff[config('foundation.staff.superior_id')] = isset($unitMapping[$unitId]) ? $unitMapping[$unitId][$leaderKey] : null;
+
         return $staff;
     }
 
-
-    public static  function addPositionName($staff,$positionList)
+    public static  function addPositionName($staff, $positionMapping)
     {
-        foreach ($positionList as $position)
-        {
-            if($position[config('foundation.position.id')] == $staff[config('foundation.staff.position_id')])
-            {
-                $staff[config('foundation.staff.position_name')] = $position[config('foundation.position.name')];
-            }
-        }
+        $positionId = $staff[config('foundation.staff.position_id')];
+        $positionKey = config('foundation.position.name');
+
+        $staff[config('foundation.staff.position_name')] = isset($positionMapping[$positionId]) ? $positionMapping[$positionId][$positionKey] : null;
+
         return $staff;
     }
 
@@ -328,7 +322,6 @@ class StaffCore
 
         return $dataOut;
     }
-
 
     public static function addStaffUnitName($unit)
     {
