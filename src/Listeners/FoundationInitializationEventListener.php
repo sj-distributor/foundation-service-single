@@ -40,38 +40,39 @@ class FoundationInitializationEventListener
             $usUnits = UnitCore::createInitializeList($event->data['message']['usUnits'],2);
             $cnStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['cnStaffs'],$cnUnits,$cnPositions,1);
             $usStaffs = StaffCore::createInitializeListUnitAndPosition($event->data['message']['usStaffs'],$usUnits,$usPositions,2);
+
             $positionModel::query()->delete();
-            foreach ($cnPositions as $cnPosition)
+            foreach (array_chunk($cnPositions, 500) as $chunk)
             {
-                $positionModel::insert($cnPosition);
+                $positionModel::insert($chunk);
             }
 
-            foreach ($usPositions as $usPosition)
+            foreach (array_chunk($usPositions, 500) as $chunk)
             {
-                $positionModel::insert($usPosition);
+                $positionModel::insert($chunk);
             }
 
             $staffModel::query()->delete();
-            foreach ($cnStaffs as $cnStaff)
+            foreach (array_chunk($cnStaffs, 500) as $chunk)
             {
-                $staffModel::insert($cnStaff);
+                $staffModel::insert($chunk);
             }
 
-            foreach ($usStaffs as $usStaff)
+            foreach (array_chunk($usStaffs, 500) as $chunk)
             {
-                $staffModel::insert($usStaff);
+                $staffModel::insert($chunk);
             }
 
 
             $unitModel::query()->delete();
-            foreach ($cnUnits as $cnUnit)
+            foreach (array_chunk($cnUnits, 500) as $chunk)
             {
-                $unitModel::insert($cnUnit);
+                $unitModel::insert($chunk);
             }
 
-            foreach ($usUnits as $usUnit)
+            foreach (array_chunk($usUnits, 500) as $chunk)
             {
-                $unitModel::insert($usUnit);
+                $unitModel::insert($chunk);
             }
         });
     }
