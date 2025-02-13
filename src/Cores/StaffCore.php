@@ -22,45 +22,53 @@ class StaffCore
         return $staffData;
     }
 
+    public static function generateUnitMapping($unitList)
+    {
+        $unitIdKey = config('foundation.unit.id');
+        return array_reduce($unitList, function($result, $unit) use ($unitIdKey) {
+            $result[$unit[$unitIdKey]] = $unit;
+            return $result;
+        });
+    }
+
+    public static function generatePositionMapping($positionList)
+    {
+        $positionIdKey = config('foundation.position.id');
+        return array_reduce($positionList, function($result, $position) use ($positionIdKey) {
+            $result[$position[$positionIdKey]] = $position;
+            return $result;
+        });
+    }
+
     public static function createInitializeListUnitAndPosition($staffList,$unitList,$positionList,$countryCode)
     {
-        $unitMapping = array();
-        foreach ($unitList as $unit)
-        {
-            $unitMapping[$unit[config('foundation.unit.id')]] = $unit;
-        }
-
-        $positionMapping = array();
-        foreach ($positionList as $position)
-        {
-            $positionMapping[$position[config('foundation.position.id')]] = $position;
-        }
-
         $staffData  =  array();
         foreach ($staffList as $staff)
         {
             if($countryCode == 1)
             {
                 $item = self::toCnInitializeModel($staff);
-                $item = self::addDepartmentNameAndGroupName($item, $unitMapping);
-                $item = self::addPositionName($item, $positionMapping);
-                $item = self::addSuperiorId($item, $unitMapping);
-                $item = self::addCompanyName($item, $unitMapping);
+                $item = self::addDepartmentNameAndGroupName($item, $unitList);
+                $item = self::addPositionName($item, $positionList);
+                $item = self::addSuperiorId($item, $unitList);
+                $item = self::addCompanyName($item, $unitList);
             }else
             {
                 $item =self::toUsInitializeModel($staff);
-                $item = self::addDepartmentNameAndGroupName($item, $unitMapping);
-                $item = self::addPositionName($item, $positionMapping);
-                $item = self::addSuperiorId($item, $unitMapping);
-                $item = self::addCompanyName($item, $unitMapping);
+                $item = self::addDepartmentNameAndGroupName($item, $unitList);
+                $item = self::addPositionName($item, $positionList);
+                $item = self::addSuperiorId($item, $unitList);
+                $item = self::addCompanyName($item, $unitList);
             }
             $staffData[] = $item;
         }
         return $staffData;
     }
 
-    public static function addDepartmentNameAndGroupName($staff, $unitMapping)
+    public static function addDepartmentNameAndGroupName($staff, $unitList)
     {
+        $unitMapping = self::generateUnitMapping($unitList);
+
         $departmentId = $staff[config('foundation.staff.department_id')];
         $groupId = $staff[config('foundation.staff.group_id')];
         $unitKey = config('foundation.unit.name');
@@ -71,8 +79,10 @@ class StaffCore
         return $staff;
     }
 
-    public static function addCompanyName($staff, $unitMapping)
+    public static function addCompanyName($staff, $unitList)
     {
+        $unitMapping = self::generateUnitMapping($unitList);
+
         $companyId = $staff[config('foundation.staff.company_id')];
         $unitKey = config('foundation.unit.name');
 
@@ -81,8 +91,10 @@ class StaffCore
         return $staff;
     }
 
-    public static function addSuperiorId($staff, $unitMapping)
+    public static function addSuperiorId($staff, $unitList)
     {
+        $unitMapping = self::generateUnitMapping($unitList);
+
         $unitId = $staff[config('foundation.staff.group_id')];
 
         if(empty($staff[config('foundation.staff.group_id')]))
@@ -102,8 +114,10 @@ class StaffCore
         return $staff;
     }
 
-    public static  function addPositionName($staff, $positionMapping)
+    public static  function addPositionName($staff, $positionList)
     {
+        $positionMapping = self::generatePositionMapping($positionList);
+
         $positionId = $staff[config('foundation.staff.position_id')];
         $positionKey = config('foundation.position.name');
 
