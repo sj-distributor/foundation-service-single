@@ -38,8 +38,9 @@ class StaffCNUpdatedEventListener
 
         if(count($unitList) > 0)
         {
-            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData,$unitList);
-            $staffData = StaffCore::addCompanyName($staffData, $unitList);
+            $unitMapping = StaffCore::generateUnitMapping($unitList);
+            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitMapping);
+            $staffData = StaffCore::addCompanyName($staffData, $unitMapping);
         }
 
         $positionModel = new $this->positionPath();
@@ -48,7 +49,8 @@ class StaffCNUpdatedEventListener
 
         if(!empty($positionList))
         {
-            $staffData = StaffCore::addPositionName($staffData,$positionList);
+            $positionMapping = StaffCore::generatePositionMapping($positionList);
+            $staffData = StaffCore::addPositionName($staffData, $positionMapping);
         }
 
         $staffCNModel = new $this->staffPath();

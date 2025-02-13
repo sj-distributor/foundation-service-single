@@ -31,22 +31,24 @@ class StaffUSAddedEventListener
 
         $unitList = $unitModel->where(config('foundation.unit.country_code'), 2)->get();
 
-        if(count($unitList) > 0){
-            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitList);
-            $staffData = StaffCore::addCompanyName($staffData, $unitList);
+        if (count($unitList) > 0) {
+            $unitMapping = StaffCore::generateUnitMapping($unitList);
+            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitMapping);
+            $staffData = StaffCore::addCompanyName($staffData, $unitMapping);
         }
 
         $positionModel = new $this->positionPath();
 
         $positionList = $positionModel->where(config('foundation.position.id'),$staffData[config('foundation.staff.position_id')])->get();
 
-        if(!empty($positionList)){
-            $staffData = StaffCore::addPositionName($staffData,$positionList);
+        if (!empty($positionList)) {
+            $positionMapping = StaffCore::generatePositionMapping($positionList);
+            $staffData = StaffCore::addPositionName($staffData, $positionMapping);
         }
 
         $staffUSModel = new $this->staffPath();
 
         $staffUSModel::insert($staffData);
-       
+
     }
 }
