@@ -24,17 +24,9 @@ class StaffCore
 
     public static function createInitializeListUnitAndPosition($staffList,$unitList,$positionList,$countryCode)
     {
-        $unitMapping = array();
-        foreach ($unitList as $unit)
-        {
-            $unitMapping[$unit[config('foundation.unit.id')]] = $unit;
-        }
+        $unitMapping = self::generateUnitMapping($unitList);
 
-        $positionMapping = array();
-        foreach ($positionList as $position)
-        {
-            $positionMapping[$position[config('foundation.position.id')]] = $position;
-        }
+        $positionMapping = self::generatePositionMapping($positionList);
 
         $staffData  =  array();
         foreach ($staffList as $staff)
@@ -341,5 +333,25 @@ class StaffCore
         }
 
         return null;
+    }
+
+    public static function generateUnitMapping($unitList)
+    {
+        $results = [];
+        $unitIdKey = config('foundation.unit.id');
+        foreach($unitList as $unit) {
+            $results[$unit[$unitIdKey]] = $unit;
+        }
+        return $results;
+    }
+
+    public static function generatePositionMapping($positionList)
+    {
+        $results = [];
+        $positionIdKey = config('foundation.position.id');
+        foreach($positionList as $position) {
+            $results[$position[$positionIdKey]] = $position;
+        }
+        return $results;
     }
 }

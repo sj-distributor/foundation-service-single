@@ -32,8 +32,9 @@ class StaffUSUpdatedEventListener
         $unitList = $unitModel->where(config('foundation.unit.country_code'), 2)->get();
 
         if (count($unitList) > 0) {
-            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitList);
-            $staffData = StaffCore::addCompanyName($staffData, $unitList);
+            $unitMapping = StaffCore::generateUnitMapping($unitList);
+            $staffData = StaffCore::addDepartmentNameAndGroupName($staffData, $unitMapping);
+            $staffData = StaffCore::addCompanyName($staffData, $unitMapping);
         }
 
         $positionModel = new $this->positionPath();
@@ -41,7 +42,8 @@ class StaffUSUpdatedEventListener
         $positionList = $positionModel->where(config('foundation.position.id'), $staffData[config('foundation.staff.position_id')])->get();
 
         if (!empty($positionList)) {
-            $staffData = StaffCore::addPositionName($staffData, $positionList);
+            $positionMapping = StaffCore::generatePositionMapping($positionList);
+            $staffData = StaffCore::addPositionName($staffData, $positionMapping);
         }
 
         $staffUSModel = new $this->staffPath();
